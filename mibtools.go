@@ -1,6 +1,6 @@
 package mibtools
 
-// [2020-05-18] 1505 
+// [MAY-19-2020] 1525 
 // S:\MiGo\mibGOPATH\src\mimodules\callmibtools\mibtools\mibtools.go
 
 // Usage:
@@ -23,7 +23,7 @@ import (
 
 // Version current version
 func Version() string {
-	return "mibtools: MAY-18-2020"
+	return "mibtools [MAY-19-2020]"
 } 
 
 // ConfigEntry key/value pair model
@@ -101,13 +101,14 @@ func (errc ErrorLevel) String() string {
 
 // ErrorItem my error item interface 
 type ErrorItem struct {
+	PackageName string
 	FunctionName string
-	Code  ErrorLevel
+	Code ErrorLevel
 	Details string
 }
 func (e *ErrorItem) Error() string {
 	var returnedValue string
-	returnedValue = e.FunctionName + ". " + e.Code.String() + ". " + e.Details
+	returnedValue = e.PackageName + ". " + e.FunctionName + ". " + e.Code.String() + ". " + e.Details
   return returnedValue
 }
 
@@ -264,9 +265,10 @@ func PutConfigKeyValue(key string, value string, app *appConfigSlice) {
 
 // LogError report error details
 func LogError(e ErrorItem) {
-	var message string
+	var message, source string
+	source = e.PackageName + ". " + e.FunctionName
 	message = e.Code.String() + ". " + e.Details
-	WriteToLog(e.FunctionName, message)
+	WriteToLog(source, message)
 }
 
 // WriteToLog write header and message to Log file at private member pathToLog
